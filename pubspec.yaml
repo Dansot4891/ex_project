@@ -51,6 +51,7 @@ dependencies:
   cached_video_player_plus: ^4.0.3
   youtube_player_iframe: ^5.2.1
   device_info_plus: ^11.5.0
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

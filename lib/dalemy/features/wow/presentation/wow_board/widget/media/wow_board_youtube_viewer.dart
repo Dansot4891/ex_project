@@ -1,6 +1,4 @@
-import 'package:ex_project/core/module/media/app_youtube_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:ex_project/app/di/app_di.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class WowBoardYoutubeViewer extends StatefulWidget {
