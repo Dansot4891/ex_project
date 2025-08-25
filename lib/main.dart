@@ -2,6 +2,7 @@ import 'package:ex_project/app/di/app_di.dart';
 import 'package:ex_project/dalemy/features/wow/presentation/wow_board/page/wow_page_root.dart';
 import 'package:ex_project/insta/view/insta_ex_view.dart';
 import 'package:ex_project/isolate/page/isolate_page.dart';
+import 'package:ex_project/method_channel/method_channel_page.dart';
 import 'package:ex_project/rx_dart/presentation/page/rx_dart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +28,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: IsolatePage());
+    return MaterialApp(home: MethodChannelPage());
   }
 }
