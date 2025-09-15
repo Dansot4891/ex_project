@@ -1,9 +1,9 @@
 import 'package:ex_project/rx_dart/presentation/controller/rx_dart_controller.dart';
+import 'package:ex_project/rx_dart/presentation/controller/rx_dart_state.dart';
 import 'package:flutter/material.dart';
 
 class RxDartPage extends StatefulWidget {
   const RxDartPage({super.key});
-
   @override
   State<RxDartPage> createState() => _RxDartPageState();
 }
@@ -14,6 +14,7 @@ class _RxDartPageState extends State<RxDartPage> {
   @override
   void initState() {
     controller = RxDartController();
+    controller.fetch(); // 최초 한번만
     super.initState();
   }
 
@@ -29,55 +30,58 @@ class _RxDartPageState extends State<RxDartPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Text("rxdart controller ex"),
-            StreamBuilder(
-              stream: controller.counterStream,
-              builder: (context, snapshot) {
-                // 로딩 상태 (아직 데이터가 없음)
-                if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
-                }
+            Expanded(
+              child: StreamBuilder<RxDartState>(
+                stream: controller.stream,
+                initialData: controller.current,
+                builder: (context, snap) {
+                  final state = snap.data!;
 
-                // 에러 상태
-                if (snapshot.hasError || snapshot.data == null) {
-                  return Text(
-                    'Error: ${snapshot.error}',
-                    style: TextStyle(color: Colors.red),
-                  );
-                }
+                  /// 로딩 상태
+                  if (state.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                final state = snapshot.data!;
+                  /// 데이터가 없을 때
+                  final searchList = state.searchList;
+                  if (searchList.isEmpty) {
+                    return const Center(child: Text("데이터가 없습니다"));
+                  }
 
-                if (state.isLoading) {
-                  return CircularProgressIndicator();
-                }
-                final list = state.list;
-
-                // 성공 상태 (데이터 있음)
-                return Expanded(
-                  child: Column(
+                  /// 데이터가 있을 때
+                  return Column(
                     children: [
-                      Text(state.title),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          state.title,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            labelText: "검색어 (비우면 원본으로 복귀)",
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: controller.onQueryChanged,
+                        ),
+                      ),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: list.length,
-                          itemBuilder: (context, index) {
-                            final item = list[index];
-                            return Text(item);
-                          },
+                          itemCount: searchList.length,
+                          itemBuilder: (_, i) =>
+                              ListTile(title: Text(searchList[i])),
                         ),
                       ),
                     ],
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                controller.fetch();
-              },
-              child: Text("fetch"),
-            ),
+            TextButton(onPressed: controller.fetch, child: const Text("조회")),
           ],
         ),
       ),
