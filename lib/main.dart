@@ -6,6 +6,7 @@ import 'package:ex_project/insta/view/insta_ex_view.dart';
 import 'package:ex_project/isolate/page/isolate_page.dart';
 import 'package:ex_project/method_channel/method_channel_page.dart';
 import 'package:ex_project/rx_dart/presentation/page/rx_dart_page.dart';
+import 'package:ex_project/zoom/presentation/page/zoom_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
@@ -45,7 +46,17 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      child: MaterialApp(home: InjectablePage(viewModel: viewModel)),
+      child: MaterialApp(
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: const TextScaler.linear(1.0), // ✅ 새 방식
+            ),
+            child: child!,
+          );
+        },
+        home: ZoomPage(),
+      ),
     );
   }
 }
