@@ -26,6 +26,13 @@ class AppDb {
     );
   }
 
+  /// 트랜잭션 함수
+  /// 여러 함수 실행 중, 하나라도 실패시, 모두 되돌리는 기능
+  Future<void> transaction(Future<void> Function(Transaction txn) func) async {
+    // Insert some records in a transaction
+    await _database.transaction(func);
+  }
+
   Future<void> close() async {
     await _database.close();
   }
