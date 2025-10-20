@@ -1,7 +1,7 @@
-import 'package:ex_project/theme/page/theme_page.dart';
+import 'package:ex_project/sqllite/core/db/app_db.dart';
+import 'package:ex_project/sqllite/presentation/page/todo_page.dart';
 import 'package:ex_project/theme/theme/custom_theme_app.dart';
 import 'package:ex_project/injectable/injection/app_injection.dart';
-import 'package:ex_project/injectable/presentation/controller/injetable_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +18,8 @@ void main() async {
     DeviceOrientation.portraitDown, // 역방향 세로
   ]);
 
+  await AppDb.instance.init();
+
   runApp(const CustomThemeApp(child: MyApp()));
 }
 
@@ -29,12 +31,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final viewModel = InjectableViewModel();
   // This widget is the root of your application.
   @override
   void initState() {
     super.initState();
-    viewModel.getInjectableTests();
   }
 
   @override
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             child: child!,
           );
         },
-        home: ThemePage(),
+        home: TodoPage(),
       ),
     );
   }
