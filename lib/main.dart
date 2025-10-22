@@ -1,3 +1,4 @@
+import 'package:ex_project/riverpod_presentation/presentation2/page/test2_page.dart';
 import 'package:ex_project/sqllite/core/db/app_db.dart';
 import 'package:ex_project/sqllite/presentation/page/todo_page.dart';
 import 'package:ex_project/theme/theme/custom_theme_app.dart';
@@ -49,7 +50,7 @@ class _MyAppState extends State<MyApp> {
             child: child!,
           );
         },
-        home: TodoPage(),
+        home: Test2Page(),
       ),
     );
   }
