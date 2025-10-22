@@ -2,6 +2,7 @@ import 'package:ex_project/sqllite/core/db/app_db.dart';
 import 'package:ex_project/sqllite/core/db/db_const.dart';
 import 'package:ex_project/sqllite/data/database/user_database.dart';
 import 'package:ex_project/sqllite/domain/model/add_user_model.dart';
+import 'package:ex_project/sqllite/domain/model/todo_with_user_model.dart';
 import 'package:ex_project/sqllite/domain/model/user_model.dart';
 
 class UserDatabaseImpl implements UserDatabase {
@@ -53,5 +54,22 @@ class UserDatabaseImpl implements UserDatabase {
       isAscending: isAscending,
     );
     return users.map((e) => UserModel.fromJson(e)).toList();
+  }
+
+  @override
+  Future<List<TodoWithUserModel>> getTodosForUser(int userId) async {
+    final results = await _appDb.selectWithJoin(
+      mainTable: DbConst.tableTodo,
+      joinTable: DbConst.tableUser,
+      mainTableKey: DbConst.columnUserId,
+      joinTableKey: DbConst.columnUserId,
+    );
+
+    // WHERE 조건 적용을 위해 필터링
+    final filteredResults = results.where((row) {
+      return row[DbConst.columnUserId] == userId;
+    }).toList();
+
+    return filteredResults.map((e) => TodoWithUserModel.fromJson(e)).toList();
   }
 }

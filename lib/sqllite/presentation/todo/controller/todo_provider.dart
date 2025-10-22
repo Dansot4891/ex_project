@@ -3,11 +3,11 @@ import 'package:ex_project/sqllite/data/database/todo_database_impl.dart';
 import 'package:ex_project/sqllite/data/repo_impl/todo_repository_impl.dart';
 import 'package:ex_project/sqllite/domain/model/add_todo_model.dart';
 import 'package:ex_project/sqllite/domain/model/todo_model.dart';
-import 'package:ex_project/sqllite/domain/use_case/add_todo_use_case.dart';
-import 'package:ex_project/sqllite/domain/use_case/delete_todo_use_case.dart';
-import 'package:ex_project/sqllite/domain/use_case/edit_todo_use_case.dart';
-import 'package:ex_project/sqllite/domain/use_case/get_todos_use_case.dart';
-import 'package:ex_project/sqllite/presentation/controller/todo_state.dart';
+import 'package:ex_project/sqllite/domain/use_case/todo/add_todo_use_case.dart';
+import 'package:ex_project/sqllite/domain/use_case/todo/delete_todo_use_case.dart';
+import 'package:ex_project/sqllite/domain/use_case/todo/edit_todo_use_case.dart';
+import 'package:ex_project/sqllite/domain/use_case/todo/get_todos_use_case.dart';
+import 'package:ex_project/sqllite/presentation/todo/controller/todo_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'todo_provider.g.dart';
@@ -35,6 +35,7 @@ class TodoProvider extends _$TodoProvider {
       updatedAt: DateTime.now(),
     );
     await useCase.execute(todo);
+    ref.invalidateSelf();
   }
 
   Future<void> deleteTodo(int todoId) async {
@@ -42,6 +43,7 @@ class TodoProvider extends _$TodoProvider {
       TodoRepositoryImpl(TodoDatabaseImpl(AppDb.instance)),
     );
     await useCase.execute(todoId);
+    ref.invalidateSelf();
   }
 
   Future<void> editTodo(int todoId) async {
@@ -56,5 +58,6 @@ class TodoProvider extends _$TodoProvider {
       updatedAt: DateTime.now(),
     );
     await useCase.execute(todoId: todoId, todo: todo);
+    ref.invalidateSelf();
   }
 }

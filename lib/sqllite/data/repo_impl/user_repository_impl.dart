@@ -1,5 +1,6 @@
 import 'package:ex_project/sqllite/data/database/user_database.dart';
 import 'package:ex_project/sqllite/domain/model/add_user_model.dart';
+import 'package:ex_project/sqllite/domain/model/todo_with_user_model.dart';
 import 'package:ex_project/sqllite/domain/model/user_model.dart';
 import 'package:ex_project/sqllite/domain/repo/user_repository.dart';
 
@@ -40,5 +41,10 @@ class UserRepositoryImpl implements UserRepository {
       orderBy: orderBy,
       isAscending: isAscending,
     );
+  }
+
+  @override
+  Future<List<TodoWithUserModel>> getTodosForUser(int userId) async {
+    return await _database.getTodosForUser(userId);
   }
 }

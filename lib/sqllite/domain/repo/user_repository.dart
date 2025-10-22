@@ -1,4 +1,5 @@
 import 'package:ex_project/sqllite/domain/model/add_user_model.dart';
+import 'package:ex_project/sqllite/domain/model/todo_with_user_model.dart';
 import 'package:ex_project/sqllite/domain/model/user_model.dart';
 
 abstract interface class UserRepository {
@@ -10,4 +11,5 @@ abstract interface class UserRepository {
   Future<void> addUser(AddUserModel user);
   Future<void> editUser({required int userId, required AddUserModel user});
   Future<void> deleteUser(int userId);
+  Future<List<TodoWithUserModel>> getTodosForUser(int userId);
 }

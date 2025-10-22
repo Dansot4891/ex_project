@@ -1,5 +1,6 @@
 import 'package:ex_project/riverpod_presentation/presentation2/page/test2_page.dart';
 import 'package:ex_project/sqllite/core/db/app_db.dart';
+import 'package:ex_project/sqllite/presentation/sqflite_test_page.dart';
 import 'package:ex_project/sqllite/presentation/todo/page/todo_page.dart';
 import 'package:ex_project/theme/theme/custom_theme_app.dart';
 import 'package:ex_project/injectable/injection/app_injection.dart';
@@ -50,7 +51,7 @@ class _MyAppState extends State<MyApp> {
             child: child!,
           );
         },
-        home: Test2Page(),
+        home: SqfliteTestPage(),
       ),
     );
   }
