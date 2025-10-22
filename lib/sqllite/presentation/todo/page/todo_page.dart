@@ -18,9 +18,9 @@ class TodoPage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: data.todos.length,
+                    itemCount: data.length,
                     itemBuilder: (context, index) {
-                      final todo = data.todos[index];
+                      final todo = data[index];
                       return Column(
                         children: [
                           Text(todo.todoId.toString()),
@@ -58,7 +58,6 @@ class TodoPage extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          print(error);
           return Center(child: Text(error.toString()));
         },
         loading: () {

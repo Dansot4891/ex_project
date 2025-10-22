@@ -1,6 +1,8 @@
 abstract class DbConst {
+  // 앱 데이터베이스
   static const String appDbPath = 'app.db';
 
+  // 데이터베이스 버전
   static const int v1 = 1;
 
   // Todo 테이블
