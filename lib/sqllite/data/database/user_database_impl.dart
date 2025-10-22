@@ -1,0 +1,57 @@
+import 'package:ex_project/sqllite/core/db/app_db.dart';
+import 'package:ex_project/sqllite/core/db/db_const.dart';
+import 'package:ex_project/sqllite/data/database/user_database.dart';
+import 'package:ex_project/sqllite/domain/model/add_user_model.dart';
+import 'package:ex_project/sqllite/domain/model/user_model.dart';
+
+class UserDatabaseImpl implements UserDatabase {
+  final AppDb _appDb;
+
+  UserDatabaseImpl(this._appDb);
+
+  @override
+  Future<void> addUser(AddUserModel user) async {
+    await _appDb.insert(DbConst.tableUser, user.toJson());
+  }
+
+  @override
+  Future<void> deleteUser(int userId) async {
+    await _appDb.delete(
+      table: DbConst.tableUser,
+      where: '${DbConst.columnUserId} = ?',
+      whereArgs: [userId],
+    );
+  }
+
+  @override
+  Future<void> editUser({
+    required int userId,
+    required AddUserModel user,
+  }) async {
+    await _appDb.update(
+      table: DbConst.tableUser,
+      data: user.toJson(),
+      where: '${DbConst.columnUserId} = ?',
+      whereArgs: [userId],
+    );
+  }
+
+  @override
+  Future<List<UserModel>> getUsers() async {
+    final users = await _appDb.select(DbConst.tableUser);
+    return users.map((e) => UserModel.fromJson(e)).toList();
+  }
+
+  @override
+  Future<List<UserModel>> getUsersOrderBy({
+    required String orderBy,
+    bool isAscending = true,
+  }) async {
+    final users = await _appDb.selectWithOrderBy(
+      table: DbConst.tableUser,
+      orderBy: orderBy,
+      isAscending: isAscending,
+    );
+    return users.map((e) => UserModel.fromJson(e)).toList();
+  }
+}
