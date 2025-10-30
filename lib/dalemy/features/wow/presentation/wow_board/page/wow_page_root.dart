@@ -27,9 +27,8 @@ class WowPageRoot extends ConsumerWidget with WowEvent {
     BuildContext context, {
     required WowAction action,
   }) async {
-    final provider = ref.read(wowProviderProvider.notifier);
     switch (action) {
-      case TapCommentBox(:final wow_id):
+      case TapCommentBox():
         wowShowBottomSheet(context, 'bottom sheet');
     }
   }

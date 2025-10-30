@@ -1,5 +1,4 @@
 import 'package:ex_project/dalemy/features/wow/data/data_source/remote/wow_remote_data_source.dart';
-import 'package:ex_project/dalemy/features/wow/data/mapper/wow_mapper.dart';
 import 'package:ex_project/dalemy/features/wow/domain/entity/wow_entity.dart';
 import 'package:ex_project/dalemy/features/wow/domain/repository/wow_repository.dart';
 

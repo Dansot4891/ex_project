@@ -1,0 +1,246 @@
+import Flutter
+import UIKit
+import AVFoundation
+
+public class NativeVideoCompressor: NSObject, FlutterPlugin {
+    
+    public static func register(with registrar: FlutterPluginRegistrar) {
+        let channel = FlutterMethodChannel(name: "native_video_compressor", binaryMessenger: registrar.messenger())
+        let instance = NativeVideoCompressor()
+        registrar.addMethodCallDelegate(instance, channel: channel)
+    }
+
+    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        switch call.method {
+        case "compressVideo":
+            guard let args = call.arguments as? [String: Any],
+                  let inputPath = args["input"] as? String,
+                  let outputPath = args["output"] as? String,
+                  let bitrate = args["bitrate"] as? Int,
+                  let width = args["width"] as? Int,
+                  let height = args["height"] as? Int else {
+                result(FlutterError(code: "INVALID_ARGUMENTS", message: "Invalid arguments", details: nil))
+                return
+            }
+            
+            // 옵셔널 파라미터들 (기본값 설정)
+            let videoCodec = args["videoCodec"] as? String ?? "h264"
+            let audioCodec = args["audioCodec"] as? String ?? "aac"
+            let audioBitrate = args["audioBitrate"] as? Int ?? 128_000
+            let audioSampleRate = args["audioSampleRate"] as? Int ?? 44_100
+            let audioChannels = args["audioChannels"] as? Int ?? 2
+            
+            compressVideo(
+                inputPath: inputPath,
+                outputPath: outputPath,
+                targetBitrate: bitrate,
+                width: width,
+                height: height,
+                videoCodec: videoCodec,
+                audioCodec: audioCodec,
+                audioBitrate: audioBitrate,
+                audioSampleRate: audioSampleRate,
+                audioChannels: audioChannels,
+                result: result
+            )
+            
+        default:
+            result(FlutterMethodNotImplemented)
+        }
+    }
+
+    private func compressVideo(
+        inputPath: String,
+        outputPath: String,
+        targetBitrate: Int,
+        width: Int,
+        height: Int,
+        videoCodec: String,
+        audioCodec: String,
+        audioBitrate: Int,
+        audioSampleRate: Int,
+        audioChannels: Int,
+        result: @escaping FlutterResult
+    ) {
+        let inputURL = URL(fileURLWithPath: inputPath)
+        let outputURL = URL(fileURLWithPath: outputPath)
+        
+        try? FileManager.default.removeItem(at: outputURL)
+        
+        let asset = AVAsset(url: inputURL)
+        guard let videoTrack = asset.tracks(withMediaType: .video).first else {
+            result(FlutterError(code: "NO_VIDEO_TRACK", message: "Video track not found", details: nil))
+            return
+        }
+
+        do {
+            let reader = try AVAssetReader(asset: asset)
+            let writer = try AVAssetWriter(outputURL: outputURL, fileType: .mp4)
+            
+            // 비디오 코덱 선택
+            let codecType: AVVideoCodecType
+            switch videoCodec.lowercased() {
+            case "h265", "hevc":
+                codecType = .hevc
+            case "h264":
+                codecType = .h264
+            default:
+                codecType = .h264
+            }
+            
+            // 비디오 설정
+            let videoSettings: [String: Any] = [
+                AVVideoCodecKey: codecType,
+                AVVideoWidthKey: width,
+                AVVideoHeightKey: height,
+                AVVideoCompressionPropertiesKey: [
+                    AVVideoAverageBitRateKey: targetBitrate,
+                    AVVideoProfileLevelKey: codecType == .hevc ? 
+                        AVVideoProfileLevelH264HighAutoLevel : 
+                        AVVideoProfileLevelH264HighAutoLevel
+                ]
+            ]
+            
+            let readerOutput = AVAssetReaderTrackOutput(
+                track: videoTrack,
+                outputSettings: [
+                    kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_420YpCbCr8BiPlanarFullRange
+                ]
+            )
+            
+            let writerInput = AVAssetWriterInput(mediaType: .video, outputSettings: videoSettings)
+            writerInput.expectsMediaDataInRealTime = false
+            writerInput.transform = videoTrack.preferredTransform
+            
+            guard writer.canAdd(writerInput) else {
+                result(FlutterError(code: "WRITER_INPUT_ERROR", message: "Cannot add video input", details: nil))
+                return
+            }
+            
+            reader.add(readerOutput)
+            writer.add(writerInput)
+            
+            // 오디오 처리
+            var audioReaderOutput: AVAssetReaderTrackOutput?
+            var audioWriterInput: AVAssetWriterInput?
+            
+            if let audioTrack = asset.tracks(withMediaType: .audio).first {
+                audioReaderOutput = AVAssetReaderTrackOutput(
+                    track: audioTrack,
+                    outputSettings: [
+                        AVFormatIDKey: kAudioFormatLinearPCM,
+                        AVSampleRateKey: audioSampleRate,
+                        AVNumberOfChannelsKey: audioChannels,
+                        AVLinearPCMBitDepthKey: 16,
+                        AVLinearPCMIsBigEndianKey: false,
+                        AVLinearPCMIsFloatKey: false
+                    ]
+                )
+                
+                // 오디오 코덱 선택
+                let audioFormatID: AudioFormatID
+                switch audioCodec.lowercased() {
+                case "aac":
+                    audioFormatID = kAudioFormatMPEG4AAC
+                case "alac":
+                    audioFormatID = kAudioFormatAppleLossless
+                case "mp3":
+                    audioFormatID = kAudioFormatMPEGLayer3
+                default:
+                    audioFormatID = kAudioFormatMPEG4AAC // 기본값 AAC
+                }
+                
+                // 오디오 출력 설정 (변수 적용)
+                audioWriterInput = AVAssetWriterInput(mediaType: .audio, outputSettings: [
+                    AVFormatIDKey: audioFormatID,
+                    AVEncoderBitRateKey: audioBitrate,
+                    AVNumberOfChannelsKey: audioChannels,
+                    AVSampleRateKey: audioSampleRate
+                ])
+                
+                if let audioWriterInput = audioWriterInput,
+                   let audioReaderOutput = audioReaderOutput,
+                   writer.canAdd(audioWriterInput) {
+                    reader.add(audioReaderOutput)
+                    writer.add(audioWriterInput)
+                }
+            }
+
+            guard reader.startReading() else {
+                result(FlutterError(code: "READER_START_FAILED", 
+                                message: reader.error?.localizedDescription ?? "Unknown", 
+                                details: nil))
+                return
+            }
+            
+            writer.startWriting()
+            writer.startSession(atSourceTime: .zero)
+
+            let dispatchGroup = DispatchGroup()
+
+            // 비디오 처리
+            dispatchGroup.enter()
+            writerInput.requestMediaDataWhenReady(on: DispatchQueue(label: "videoQueue")) {
+                while writerInput.isReadyForMoreMediaData {
+                    guard reader.status == .reading else {
+                        writerInput.markAsFinished()
+                        dispatchGroup.leave()
+                        return
+                    }
+                    if let buffer = readerOutput.copyNextSampleBuffer() {
+                        writerInput.append(buffer)
+                    } else {
+                        writerInput.markAsFinished()
+                        dispatchGroup.leave()
+                        return
+                    }
+                }
+            }
+
+            // 오디오 처리
+            if let audioWriterInput = audioWriterInput,
+               let audioReaderOutput = audioReaderOutput {
+                dispatchGroup.enter()
+                audioWriterInput.requestMediaDataWhenReady(on: DispatchQueue(label: "audioQueue")) {
+                    while audioWriterInput.isReadyForMoreMediaData {
+                        guard reader.status == .reading else {
+                            audioWriterInput.markAsFinished()
+                            dispatchGroup.leave()
+                            return
+                        }
+                        if let buffer = audioReaderOutput.copyNextSampleBuffer() {
+                            audioWriterInput.append(buffer)
+                        } else {
+                            audioWriterInput.markAsFinished()
+                            dispatchGroup.leave()
+                            return
+                        }
+                    }
+                }
+            }
+
+            // 완료 처리
+            dispatchGroup.notify(queue: .main) {
+                if reader.status == .failed {
+                    result(FlutterError(code: "READ_FAILED", 
+                                    message: reader.error?.localizedDescription ?? "Unknown", 
+                                    details: nil))
+                    return
+                }
+                
+                writer.finishWriting {
+                    if writer.status == .completed {
+                        result(outputURL.path)
+                    } else {
+                        result(FlutterError(code: "WRITE_FAILED", 
+                                        message: writer.error?.localizedDescription ?? "Unknown", 
+                                        details: nil))
+                    }
+                }
+            }
+            
+        } catch {
+            result(FlutterError(code: "COMPRESSION_ERROR", message: error.localizedDescription, details: nil))
+        }
+    }
+}

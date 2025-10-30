@@ -76,7 +76,7 @@ class ImageExWidget extends StatelessWidget {
 
   /// 에러 발생 시 표시
   Center _buildError() {
-    return Center(
+    return const Center(
       child: Text(
         '이미지를 불러오는 중\n오류가 발생했습니다.',
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -88,12 +88,12 @@ class ImageExWidget extends StatelessWidget {
 
 Future<void> printCacheStatus() async {
   // 디스크 캐시 개수
-  final cacheKeys = await DefaultCacheManager().getFileFromCache('');
+  await DefaultCacheManager().getFileFromCache('');
 
   // 메모리 캐시 상태
   final imageCache = PaintingBinding.instance.imageCache;
-  print('메모리 캐시: ${imageCache.currentSize}/${imageCache.maximumSize}');
-  print(
+  debugPrint('메모리 캐시: ${imageCache.currentSize}/${imageCache.maximumSize}');
+  debugPrint(
     '메모리 사용량: ${imageCache.currentSizeBytes}/${imageCache.maximumSizeBytes}',
   );
 }

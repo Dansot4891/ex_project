@@ -1,8 +1,3 @@
-import 'dart:convert';
-import 'dart:developer' as dev;
-import 'package:ex_project/insta/widget/aos_insta_viewer.dart';
-import 'package:ex_project/insta/widget/insta_viewer.dart';
-import 'package:ex_project/video_cache/widget/app_video_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -28,13 +23,13 @@ class _InstaExViewState extends State<InstaExView> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onPageStarted: (String url) {
-            print('Page started loading: $url');
+            debugPrint('Page started loading: $url');
           },
           onPageFinished: (String url) async {
-            print('Page finished loading: $url');
+            debugPrint('Page finished loading: $url');
           },
           onWebResourceError: (WebResourceError error) {
-            print('WebView error: ${error.description}');
+            debugPrint('WebView error: ${error.description}');
           },
         ),
       )

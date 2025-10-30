@@ -9,7 +9,7 @@ class Test2Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Test2')),
-      body: SafeArea(
+      body: const SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(

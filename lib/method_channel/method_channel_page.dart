@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 // import 'method_channel_controller.dart';
 
 class MethodChannelPage extends StatefulWidget {
+  const MethodChannelPage({super.key});
+
   @override
-  _MethodChannelPageState createState() => _MethodChannelPageState();
+  State<MethodChannelPage> createState() => _MethodChannelPageState();
 }
 
 class _MethodChannelPageState extends State<MethodChannelPage> {
@@ -18,21 +20,21 @@ class _MethodChannelPageState extends State<MethodChannelPage> {
   void initState() {
     super.initState();
     // 컨트롤러 초기화
-    _controller = MethodChannel('com.example.ex_project/battery');
+    _controller = const MethodChannel('com.example.ex_project/battery');
   }
 
   Future<void> _getBatteryLevel() async {
-    print("=== getBatteryLevel 시작 ===");
+    debugPrint("=== getBatteryLevel 시작 ===");
     setState(() {
       _isLoading = true;
     });
 
     try {
-      print("=== callMethod 호출 전 ===");
+      debugPrint("=== callMethod 호출 전 ===");
       final int? result = await _controller.invokeMethod<int>(
         'getBatteryLevel',
       );
-      print("=== callMethod 결과: $result ===");
+      debugPrint("=== callMethod 결과: $result ===");
 
       setState(() {
         _batteryLevel = result != null
@@ -41,7 +43,7 @@ class _MethodChannelPageState extends State<MethodChannelPage> {
         _isLoading = false;
       });
     } catch (e) {
-      print("=== 에러 발생: $e ===");
+      debugPrint("=== 에러 발생: $e ===");
       setState(() {
         _batteryLevel = "Error: $e";
         _isLoading = false;
@@ -52,37 +54,50 @@ class _MethodChannelPageState extends State<MethodChannelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Battery Info'), backgroundColor: Colors.blue),
+      appBar: AppBar(
+        title: const Text('Battery Info'),
+        backgroundColor: Colors.blue,
+      ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.battery_charging_full, size: 80, color: Colors.green),
-              SizedBox(height: 30),
+              const Icon(
+                Icons.battery_charging_full,
+                size: 80,
+                color: Colors.green,
+              ),
+              const SizedBox(height: 30),
 
               Card(
                 elevation: 4,
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Text(
                     _batteryLevel,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
               ),
 
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               ElevatedButton(
                 onPressed: _isLoading ? null : _getBatteryLevel,
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30,
+                    vertical: 15,
+                  ),
                 ),
                 child: _isLoading
-                    ? Row(
+                    ? const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           SizedBox(
@@ -97,7 +112,10 @@ class _MethodChannelPageState extends State<MethodChannelPage> {
                           Text('Loading...'),
                         ],
                       )
-                    : Text('Get Battery Level', style: TextStyle(fontSize: 16)),
+                    : const Text(
+                        'Get Battery Level',
+                        style: TextStyle(fontSize: 16),
+                      ),
               ),
             ],
           ),

@@ -6,8 +6,6 @@ import 'package:ex_project/dalemy/features/wow/domain/use_case/get_wows_use_case
 import 'package:ex_project/dalemy/features/wow/domain/entity/wow_entity.dart';
 import 'package:ex_project/dalemy/features/wow/presentation/wow_board/controller/wow_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:video_player/video_player.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 part 'wow_provider.g.dart';
 

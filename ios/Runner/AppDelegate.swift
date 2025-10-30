@@ -20,6 +20,11 @@ import UIKit
       }
       self.receiveBatteryLevel(result: result)
     })
+
+    /// Native Video Compressor 등록
+    if let registrar = self.registrar(forPlugin: "NativeVideoCompressor") {
+      NativeVideoCompressor.register(with: registrar)
+    }
     // ------------------------------메서드 채널 설정------------------------------
 
     GeneratedPluginRegistrant.register(with: self)
