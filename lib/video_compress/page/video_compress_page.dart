@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:ex_project/video_compress/component/video_file_widget.dart';
 import 'package:ex_project/video_compress/controller/native_video_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,18 +14,14 @@ class VideoCompressPage extends StatefulWidget {
 
 class _VideoCompressPageState extends State<VideoCompressPage> {
   String? path;
+  String? outputPath;
   final picker = ImagePicker();
-  VideoPlayerController? _controller;
 
   void _selectVideo() async {
     final result = await picker.pickVideo(source: ImageSource.gallery);
     if (result != null) {
       setState(() {
         path = result.path;
-        _controller = VideoPlayerController.file(File(path!))
-          ..initialize().then((_) {
-            setState(() {});
-          });
       });
       debugPrint('path: $path');
     }
@@ -43,21 +40,25 @@ class _VideoCompressPageState extends State<VideoCompressPage> {
                 child: Text('Select Video'),
               ),
               if (path != null)
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: _controller != null && _controller!.value.isInitialized
-                      ? AspectRatio(
-                          aspectRatio: _controller!.value.aspectRatio,
-                          child: VideoPlayer(_controller!),
-                        )
-                      : Container(),
+                AppFileVideoWidget(
+                  videoPath: path!,
+                  width: double.infinity,
+                  isAutoPlay: true,
+                ),
+              if (outputPath != null)
+                AppFileVideoWidget(
+                  videoPath: outputPath!,
+                  width: double.infinity,
+                  isAutoPlay: true,
                 ),
               ElevatedButton(
-                onPressed: () {
-                  NativeVideoController.compressVideo(
-                    inputPath: 'assets/video/test.mp4',
-                    outputPath: 'assets/video/test_compressed.mp4',
+                onPressed: () async {
+                  final result = await NativeVideoController.compressVideo(
+                    inputPath: path!,
                   );
+                  setState(() {
+                    outputPath = result;
+                  });
                 },
                 child: Text('Compress Video'),
               ),

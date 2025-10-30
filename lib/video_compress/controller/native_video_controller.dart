@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:ex_project/video_compress/controller/video_info_controller.dart';
 import 'package:ex_project/video_compress/enum/audio_codec.dart';
 import 'package:ex_project/video_compress/enum/video_codec.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:math' as Math;
+import 'dart:ui' as ui;
 
 abstract class NativeVideoController {
   static const MethodChannel _channel = MethodChannel(
@@ -24,7 +27,6 @@ abstract class NativeVideoController {
   /// [audioChannels] : 오디오 채널 수 (1=모노, 2=스테레오), 기본값: 2
   static Future<String?> compressVideo({
     required String inputPath,
-    required String outputPath,
     int bitrate = 2000000,
     int? width,
     int? height,
@@ -35,19 +37,30 @@ abstract class NativeVideoController {
     int audioChannels = 2,
   }) async {
     try {
-      final String? result = await _channel.invokeMethod('compressVideo', {
+      debugPrint(
+        '-------------------------------- 압축 전 비디오 정보 --------------------------------',
+      );
+      await VideoInfoController.printVideoInfo(inputPath);
+      // 출력 경로 생성
+      final dir = await getTemporaryDirectory();
+      final outputPath = '${dir.path}/$outputFileName';
+      await _channel.invokeMethod('compressVideo', {
         'input': inputPath,
         'output': outputPath,
         'bitrate': bitrate,
         'width': width,
         'height': height,
-        'videoCodec': videoCodec,
-        'audioCodec': audioCodec,
+        'videoCodec': videoCodec.value,
+        'audioCodec': audioCodec.value,
         'audioBitrate': audioBitrate,
         'audioSampleRate': audioSampleRate,
         'audioChannels': audioChannels,
       });
-      return result;
+      debugPrint(
+        '-------------------------------- 압축 후 비디오 정보 --------------------------------',
+      );
+      await VideoInfoController.printVideoInfo(outputPath);
+      return outputPath;
     } on PlatformException catch (e) {
       debugPrint('비디오 압축 실패: ${e.message}');
       return null;
@@ -57,7 +70,7 @@ abstract class NativeVideoController {
   /// 캐시 삭제
   static Future<void> clearCache() async {
     final tempDir = await getTemporaryDirectory();
-    final fileName = '${tempDir.path}/$_fileName';
+    final fileName = '${tempDir.path}/$outputFileName';
     if (File(fileName).existsSync()) {
       File(fileName).deleteSync();
       debugPrint("✅ 캐시 삭제 완료");
@@ -65,5 +78,5 @@ abstract class NativeVideoController {
   }
 
   /// 파일명
-  static String get _fileName => 'compressed.mp4';
+  static String get outputFileName => 'compressed.mp4';
 }
