@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
-abstract class AppVideoCompressor {
+abstract class NativeVideoController {
   static const MethodChannel _channel = MethodChannel(
     'native_video_compressor',
   );
@@ -25,9 +25,9 @@ abstract class AppVideoCompressor {
   static Future<String?> compressVideo({
     required String inputPath,
     required String outputPath,
-    required int bitrate,
-    required int width,
-    required int height,
+    int bitrate = 2000000,
+    int? width,
+    int? height,
     VideoCodec videoCodec = VideoCodec.h264,
     AudioCodec audioCodec = AudioCodec.aac,
     int audioBitrate = 128000,

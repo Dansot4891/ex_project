@@ -16,14 +16,14 @@ public class NativeVideoCompressor: NSObject, FlutterPlugin {
             guard let args = call.arguments as? [String: Any],
                   let inputPath = args["input"] as? String,
                   let outputPath = args["output"] as? String,
-                  let bitrate = args["bitrate"] as? Int,
-                  let width = args["width"] as? Int,
-                  let height = args["height"] as? Int else {
+                  let bitrate = args["bitrate"] as? Int else {
                 result(FlutterError(code: "INVALID_ARGUMENTS", message: "Invalid arguments", details: nil))
                 return
             }
             
             // 옵셔널 파라미터들 (기본값 설정)
+            let width = args["width"] as? Int  // nil이면 원본 크기 사용
+            let height = args["height"] as? Int  // nil이면 원본 크기 사용
             let videoCodec = args["videoCodec"] as? String ?? "h264"
             let audioCodec = args["audioCodec"] as? String ?? "aac"
             let audioBitrate = args["audioBitrate"] as? Int ?? 128_000
@@ -53,8 +53,8 @@ public class NativeVideoCompressor: NSObject, FlutterPlugin {
         inputPath: String,
         outputPath: String,
         targetBitrate: Int,
-        width: Int,
-        height: Int,
+        width: Int?,
+        height: Int?,
         videoCodec: String,
         audioCodec: String,
         audioBitrate: Int,
@@ -72,6 +72,32 @@ public class NativeVideoCompressor: NSObject, FlutterPlugin {
             result(FlutterError(code: "NO_VIDEO_TRACK", message: "Video track not found", details: nil))
             return
         }
+
+        // 원본 비디오 크기 가져오기
+        let naturalSize = videoTrack.naturalSize
+        let transform = videoTrack.preferredTransform
+        
+        // Transform을 고려한 실제 크기 계산 (회전 고려)
+        let isPortrait = transform.a == 0 && abs(transform.b) == 1.0 && 
+                        abs(transform.c) == 1.0 && transform.d == 0
+        
+        let originalWidth: Int
+        let originalHeight: Int
+        
+        if isPortrait {
+            // 90도 또는 270도 회전된 경우 width와 height 교체
+            originalWidth = Int(naturalSize.height)
+            originalHeight = Int(naturalSize.width)
+        } else {
+            originalWidth = Int(naturalSize.width)
+            originalHeight = Int(naturalSize.height)
+        }
+        
+        // width, height가 nil이면 원본 크기 사용
+        let finalWidth = width ?? originalWidth
+        let finalHeight = height ?? originalHeight
+        
+        print("📹 비디오 크기 - 원본: \(originalWidth)x\(originalHeight), 출력: \(finalWidth)x\(finalHeight)")
 
         do {
             let reader = try AVAssetReader(asset: asset)
@@ -91,8 +117,8 @@ public class NativeVideoCompressor: NSObject, FlutterPlugin {
             // 비디오 설정
             let videoSettings: [String: Any] = [
                 AVVideoCodecKey: codecType,
-                AVVideoWidthKey: width,
-                AVVideoHeightKey: height,
+                AVVideoWidthKey: finalWidth,
+                AVVideoHeightKey: finalHeight,
                 AVVideoCompressionPropertiesKey: [
                     AVVideoAverageBitRateKey: targetBitrate,
                     AVVideoProfileLevelKey: codecType == .hevc ? 
