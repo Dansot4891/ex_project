@@ -752,6 +752,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  native_video_compress:
+    dependency: "direct main"
+    description:
+      name: native_video_compress
+      sha256: "73bb80a382da7d1e69f7069676720932d6ddcde95cc2d2ee7c2096ca35782f02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   octo_image:
     dependency: transitive
     description:

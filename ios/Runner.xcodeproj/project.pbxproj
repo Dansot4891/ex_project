@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		042E48662EB30E6F00296032 /* NativeVideoCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042E48652EB30E6F00296032 /* NativeVideoCompressor.swift */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
 		38CF63FD2DE8F678B7C48134 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A2183FC84AA5325FBCBD24F /* Pods_Runner.framework */; };
@@ -379,7 +378,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				042E48662EB30E6F00296032 /* NativeVideoCompressor.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);

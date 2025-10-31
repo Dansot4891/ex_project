@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'package:ex_project/video_compress/component/video_file_widget.dart';
-import 'package:ex_project/video_compress/controller/native_video_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:video_player/video_player.dart';
+import 'package:native_video_compress/controller/native_video_compressor.dart';
 
 class VideoCompressPage extends StatefulWidget {
   const VideoCompressPage({super.key});
@@ -55,6 +53,7 @@ class _VideoCompressPageState extends State<VideoCompressPage> {
                 onPressed: () async {
                   final result = await NativeVideoController.compressVideo(
                     inputPath: path!,
+                    printingInfo: true,
                   );
                   setState(() {
                     outputPath = result;

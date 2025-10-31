@@ -58,6 +58,7 @@ dependencies:
   path: ^1.9.1
   path_provider: ^2.1.5
   image_picker: ^1.2.0
+  native_video_compress: ^0.0.3
   
 
 dev_dependencies:
