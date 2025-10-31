@@ -17,7 +17,6 @@ class _WowBoardVideoViewerState extends State<WowBoardVideoViewer> {
   @override
   void initState() {
     super.initState();
-    print(widget.url);
     locator<AppVideoController>().initializeVideo(widget.url[pageIndex]);
   }
 

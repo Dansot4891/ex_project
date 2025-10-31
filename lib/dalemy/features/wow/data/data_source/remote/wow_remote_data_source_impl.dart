@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart' hide Headers;
 import 'package:ex_project/dalemy/features/wow/data/data_source/remote/wow_remote_data_source.dart';
 import 'package:ex_project/dalemy/features/wow/data/model/wow_board_model.dart';
-import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'wow_remote_data_source_impl.g.dart';

@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ex_project/image_cache/widget/image_ex_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 class ImageExPage extends StatefulWidget {
   const ImageExPage({super.key});
@@ -51,8 +49,8 @@ class _ImageExPageState extends State<ImageExPage> {
 Future<void> printCacheStatus() async {
   // 메모리 캐시 상태
   final imageCache = PaintingBinding.instance.imageCache;
-  print('메모리 캐시: ${imageCache.currentSize}/${imageCache.maximumSize}');
-  print(
+  debugPrint('메모리 캐시: ${imageCache.currentSize}/${imageCache.maximumSize}');
+  debugPrint(
     '메모리 사용량: ${imageCache.currentSizeBytes}/${imageCache.maximumSizeBytes}',
   );
 }

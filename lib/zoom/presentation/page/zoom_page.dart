@@ -37,7 +37,7 @@ class ZoomPage extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             ),
-            Text(
+            const Text(
               "asdfasdfadsfadsfasfasdfasdfasdfadsf",
               style: TextStyle(fontSize: 20),
             ),

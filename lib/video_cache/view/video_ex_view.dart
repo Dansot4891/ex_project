@@ -10,13 +10,13 @@ class VideoExView extends StatelessWidget {
       appBar: AppBar(title: const Text('Video Ex')),
       body: const Column(
         children: [
-          const AppVideoWidget(
+          AppVideoWidget(
             videoUrl:
                 'https://videos.pexels.com/video-files/27798565/12227924_1920_1080_25fps.mp4',
             isAutoPlay: false,
           ),
 
-          const AppVideoWidget(
+          AppVideoWidget(
             videoUrl:
                 'https://videos.pexels.com/video-files/27798565/12227924_1920_1080_25fps.mp4',
             isAutoPlay: true,

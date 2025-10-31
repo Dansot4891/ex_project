@@ -33,13 +33,13 @@ class TodoPage extends ConsumerWidget {
                             onPressed: () {
                               notifier.deleteTodo(todo.todoId);
                             },
-                            child: Text('Delete Todo'),
+                            child: const Text('Delete Todo'),
                           ),
                           ElevatedButton(
                             onPressed: () {
                               notifier.editTodo(todo.todoId);
                             },
-                            child: Text('Edit Todo'),
+                            child: const Text('Edit Todo'),
                           ),
                         ],
                       );
@@ -51,7 +51,7 @@ class TodoPage extends ConsumerWidget {
                   onPressed: () {
                     notifier.addTodo();
                   },
-                  child: Text('Add Todo'),
+                  child: const Text('Add Todo'),
                 ),
               ],
             ),

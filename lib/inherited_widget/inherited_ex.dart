@@ -43,9 +43,9 @@ class _InheritedExState extends State<InheritedEx> {
                     title = 'Changed';
                   });
                 },
-                child: Text('Change Title'),
+                child: const Text('Change Title'),
               ),
-              InheritedWidgetEx2(),
+              const InheritedWidgetEx2(),
             ],
           ),
         ),

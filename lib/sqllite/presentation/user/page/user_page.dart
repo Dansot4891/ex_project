@@ -199,7 +199,7 @@ class UserPage extends ConsumerWidget {
           );
         },
         error: (error, stackTrace) {
-          print(error);
+          debugPrint(error.toString());
           return Center(child: Text(error.toString()));
         },
         loading: () {

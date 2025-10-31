@@ -12,24 +12,24 @@ class SqfliteTestPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Text('Sqflite Test Page'),
+            const Text('Sqflite Test Page'),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TodoPage()),
+                  MaterialPageRoute(builder: (context) => const TodoPage()),
                 );
               },
-              child: Text('Todo Page'),
+              child: const Text('Todo Page'),
             ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UserPage()),
+                  MaterialPageRoute(builder: (context) => const UserPage()),
                 );
               },
-              child: Text('User Page'),
+              child: const Text('User Page'),
             ),
           ],
         ),

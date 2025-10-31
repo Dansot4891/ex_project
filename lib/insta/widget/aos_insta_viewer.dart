@@ -83,10 +83,10 @@ class _AosInstaViewerState extends State<AosInstaViewer> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error, size: 64, color: Colors.red),
-              SizedBox(height: 16),
+              const Icon(Icons.error, size: 64, color: Colors.red),
+              const SizedBox(height: 16),
               Text(errorMessage!, textAlign: TextAlign.center),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -95,7 +95,7 @@ class _AosInstaViewerState extends State<AosInstaViewer> {
                   });
                   _loadInstagramPost();
                 },
-                child: Text('다시 시도'),
+                child: const Text('다시 시도'),
               ),
             ],
           ),
@@ -109,7 +109,7 @@ class _AosInstaViewerState extends State<AosInstaViewer> {
           title: const Text('Instagram 영상'),
           actions: [
             IconButton(
-              icon: Icon(Icons.refresh),
+              icon: const Icon(Icons.refresh),
               onPressed: () {
                 setState(() {
                   isLoading = true;

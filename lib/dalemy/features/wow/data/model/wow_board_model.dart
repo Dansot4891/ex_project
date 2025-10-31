@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 part 'wow_board_model.g.dart';
 

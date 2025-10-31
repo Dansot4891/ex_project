@@ -20,17 +20,17 @@ class WowPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('와우보드'),
         actions: [
-          Icon(Icons.favorite_outline),
-          SizedBox(width: 12),
+          const Icon(Icons.favorite_outline),
+          const SizedBox(width: 12),
           Container(
             padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.grey,
             ),
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
         ],
       ),
       body: state.when(
@@ -56,7 +56,6 @@ class WowPage extends StatelessWidget {
         },
         // 에러가 발생했을 때의 뷰
         error: (err, stackTrace) {
-          print(err);
           return Container();
         },
         // 로딩 상태일 때의 뷰

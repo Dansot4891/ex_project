@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:ex_project/injectable/data/data_source/remote/injectable_test_remote_data_source.dart';
 import 'package:ex_project/injectable/data/data_source/remote/injectable_test_remote_data_source_impl.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,18 +21,8 @@ abstract class RegisterModule {
 
 class CustomInterceptor extends InterceptorsWrapper {
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    super.onError(err, handler);
-  }
-
-  @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    print('📇 onRequest: ${options.uri}');
+    debugPrint('📇 onRequest: ${options.uri}');
     super.onRequest(options, handler);
-  }
-
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    super.onResponse(response, handler);
   }
 }

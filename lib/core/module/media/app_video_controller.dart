@@ -1,3 +1,4 @@
+import 'package:flutter/rendering.dart';
 import 'package:video_player/video_player.dart';
 
 class AppVideoController {
@@ -27,7 +28,7 @@ class AppVideoController {
 
       _setActiveVideo(videoUrl);
     } catch (e) {
-      print('비디오 초기화 실패: $e');
+      debugPrint('비디오 초기화 실패: $e');
     }
   }
 

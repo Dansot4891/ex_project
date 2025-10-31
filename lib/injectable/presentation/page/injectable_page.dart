@@ -22,7 +22,7 @@ class _InjectablePageState extends State<InjectablePage> {
               return const CircularProgressIndicator();
             }
             if (state.isError) {
-              return Text("에러 에러");
+              return const Text("에러 에러");
             }
             return ListView.builder(
               itemCount: state.injectableTests.length,

@@ -35,7 +35,7 @@ class _VideoCompressPageState extends State<VideoCompressPage> {
             children: [
               ElevatedButton(
                 onPressed: _selectVideo,
-                child: Text('Select Video'),
+                child: const Text('Select Video'),
               ),
               if (path != null)
                 AppFileVideoWidget(
@@ -59,7 +59,7 @@ class _VideoCompressPageState extends State<VideoCompressPage> {
                     outputPath = result;
                   });
                 },
-                child: Text('Compress Video'),
+                child: const Text('Compress Video'),
               ),
             ],
           ),

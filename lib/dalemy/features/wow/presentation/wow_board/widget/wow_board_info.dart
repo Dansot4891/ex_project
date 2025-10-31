@@ -11,7 +11,7 @@ class PostCard extends StatefulWidget {
   final VoidCallback onShare;
 
   const PostCard({
-    Key? key,
+    super.key,
     required this.content,
     required this.updatedAt,
     required this.likeCount,
@@ -20,7 +20,7 @@ class PostCard extends StatefulWidget {
     required this.onLike,
     required this.onComment,
     required this.onShare,
-  }) : super(key: key);
+  });
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -46,7 +46,7 @@ class _PostCardState extends State<PostCard> {
       }
       isLiked = !isLiked;
     });
-    widget.onLike?.call();
+    widget.onLike.call();
   }
 
   @override
@@ -59,7 +59,7 @@ class _PostCardState extends State<PostCard> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 1,
             blurRadius: 6,
             offset: const Offset(0, 2),

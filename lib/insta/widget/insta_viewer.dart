@@ -34,7 +34,7 @@ class _InstaViewerState extends State<InstaViewer> {
         NavigationDelegate(
           /// 페이지 시작 시
           onPageStarted: (String url) {
-            print('Page started loading: $url');
+            debugPrint('Page started loading: $url');
           },
 
           /// 페이지 로딩 완료 시
@@ -71,7 +71,7 @@ class _InstaViewerState extends State<InstaViewer> {
 
             // JSON 파싱해서 사용
             final videos = json.decode(result.toString());
-            print('videos: $videos');
+            debugPrint('videos: $videos');
             setState(() {
               if (videos.isNotEmpty) {
                 videoUrl = videos.first['src'];
@@ -83,7 +83,7 @@ class _InstaViewerState extends State<InstaViewer> {
 
           /// 웹뷰 에러 시
           onWebResourceError: (WebResourceError error) {
-            print('WebView error: ${error.description}');
+            debugPrint('WebView error: ${error.description}');
           },
         ),
       )
@@ -122,6 +122,6 @@ class _InstaViewerState extends State<InstaViewer> {
           "Mozilla/5.0 (Linux; Android ${androidInfo.version.release}; ${androidInfo.model}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
     }
 
-    print('getRealUserAgent: $userAgent');
+    debugPrint('getRealUserAgent: $userAgent');
   }
 }

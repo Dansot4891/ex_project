@@ -11,6 +11,7 @@ import 'package:ex_project/sqllite/domain/use_case/user/get_todos_for_user_use_c
 import 'package:ex_project/sqllite/domain/use_case/user/get_users_order_by_use_case.dart';
 import 'package:ex_project/sqllite/domain/use_case/user/get_users_use_case.dart';
 import 'package:ex_project/sqllite/presentation/user/controller/user_state.dart';
+import 'package:flutter/rendering.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_provider.g.dart';
@@ -191,7 +192,7 @@ class UserProvider extends _$UserProvider {
       // 데이터 새로고침
       ref.invalidateSelf();
     } catch (e) {
-      print('테스트 데이터 생성 오류: $e');
+      debugPrint('테스트 데이터 생성 오류: $e');
       rethrow;
     }
   }

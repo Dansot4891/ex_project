@@ -51,7 +51,7 @@ class _InstaExViewState extends State<InstaExView> {
           children: [
             Stack(
               children: [
-                Container(
+                SizedBox(
                   width: MediaQuery.sizeOf(context).width,
                   height: MediaQuery.sizeOf(context).width + 130,
                   child: WebViewWidget(controller: controller),
@@ -69,13 +69,13 @@ class _InstaExViewState extends State<InstaExView> {
               width: MediaQuery.sizeOf(context).width,
               height: 100,
               color: Colors.yellow,
-              child: Center(child: Text('Yellow Container')),
+              child: const Center(child: Text('Yellow Container')),
             ),
             Container(
               width: MediaQuery.sizeOf(context).width,
               height: 100,
               color: Colors.purple,
-              child: Center(child: Text('Purple Container')),
+              child: const Center(child: Text('Purple Container')),
             ),
           ],
         ),
