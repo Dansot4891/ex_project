@@ -1,7 +1,7 @@
+import 'package:ex_project/drfit/page/drfit_page.dart';
 import 'package:ex_project/sqllite/core/db/app_db.dart';
 import 'package:ex_project/theme/theme/custom_theme_app.dart';
 import 'package:ex_project/injectable/injection/app_injection.dart';
-import 'package:ex_project/video_compress/page/video_compress_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
             child: child!,
           );
         },
-        home: const VideoCompressPage(),
+        home: const DrfitPage(),
       ),
     );
   }
