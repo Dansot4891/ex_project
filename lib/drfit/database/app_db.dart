@@ -22,8 +22,9 @@ class AppDatabase extends _$AppDatabase {
       select(driftItemTable).get();
 
   /// 드리프트 삽입
-  Future<void> insertDriftItemTable(DriftItemTableData driftItemTableData) =>
-      into(driftItemTable).insert(driftItemTableData);
+  Future<void> insertDriftItemTable(
+    DriftItemTableCompanion driftItemTableData,
+  ) => into(driftItemTable).insert(driftItemTableData);
 
   /// 드리프트 업데이트
   Future<void> updateDriftItemTable(DriftItemTableData driftItemTableData) =>

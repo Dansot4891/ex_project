@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' as drift;
 import 'package:ex_project/drfit/database/app_db.dart';
 import 'package:flutter/material.dart';
 
@@ -35,22 +36,38 @@ class _DrfitPageState extends State<DrfitPage> {
               onPressed: () async {
                 // 사용
                 await appDb.insertDriftItemTable(
-                  DriftItemTableData(
-                    id: 0, // autoIncrement라서 실제로는 무시됨
-                    title: 'My Title',
-                    content: 'My Content',
-                    createdAt: DateTime.now(),
+                  DriftItemTableCompanion(
+                    title: drift.Value('My Title'),
+                    content: drift.Value('My Content'),
+                    createdAt: drift.Value(DateTime.now()),
                   ),
                 );
               },
               child: const Text('Insert Drift Item'),
             ),
+            SizedBox(height: 20),
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {
                   final data = listData[index];
-                  return Text(
-                    '${data.title} ${data.content} ${data.createdAt}',
+                  return Column(
+                    children: [
+                      Text(data.title),
+                      Text(data.content),
+                      Text('${data.createdAt}'),
+                      ElevatedButton(
+                        onPressed: () {
+                          appDb.deleteDriftItemTable(data.id);
+                        },
+                        child: const Text('Delete Drift Item'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          appDb.updateDriftItemTable(data);
+                        },
+                        child: const Text('Update Drift Item'),
+                      ),
+                    ],
                   );
                 },
                 separatorBuilder: (context, index) {
