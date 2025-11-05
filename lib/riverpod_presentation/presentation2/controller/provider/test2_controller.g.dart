@@ -6,21 +6,50 @@ part of 'test2_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(Test2Controller)
+const test2ControllerProvider = Test2ControllerProvider._();
+
+final class Test2ControllerProvider
+    extends $AsyncNotifierProvider<Test2Controller, Test2State> {
+  const Test2ControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'test2ControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$test2ControllerHash();
+
+  @$internal
+  @override
+  Test2Controller create() => Test2Controller();
+}
+
 String _$test2ControllerHash() => r'a4873e85333caaef43ad8ee3c6e80d02fa695d82';
 
-/// See also [Test2Controller].
-@ProviderFor(Test2Controller)
-final test2ControllerProvider =
-    AutoDisposeAsyncNotifierProvider<Test2Controller, Test2State>.internal(
-      Test2Controller.new,
-      name: r'test2ControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$test2ControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-typedef _$Test2Controller = AutoDisposeAsyncNotifier<Test2State>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$Test2Controller extends $AsyncNotifier<Test2State> {
+  FutureOr<Test2State> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<Test2State>, Test2State>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<Test2State>, Test2State>,
+              AsyncValue<Test2State>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
