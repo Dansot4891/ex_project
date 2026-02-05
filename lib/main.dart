@@ -1,14 +1,20 @@
+import 'package:ex_project/blue_plus/blue_plus_observer.dart';
+import 'package:ex_project/blue_plus/list/blue_plus_page.dart';
 import 'package:ex_project/drfit/page/drfit_page.dart';
 import 'package:ex_project/sqllite/core/db/app_db.dart';
 import 'package:ex_project/theme/theme/custom_theme_app.dart';
 import 'package:ex_project/injectable/injection/app_injection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
   // 위젯 바인딩 초기화 : 웹뷰와 플러터 엔진과의 상호작용을 위함
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 블루투스 로그 설정
+  FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
 
   // diSetup();
   configureDependencies();
@@ -41,6 +47,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return ProviderScope(
       child: MaterialApp(
+        navigatorObservers: [BluetoothAdapterStateObserver()],
         builder: (context, child) {
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(
@@ -49,7 +56,7 @@ class _MyAppState extends State<MyApp> {
             child: child!,
           );
         },
-        home: const DrfitPage(),
+        home: const BluePlusPage(),
       ),
     );
   }
